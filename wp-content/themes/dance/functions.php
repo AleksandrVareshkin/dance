@@ -39,3 +39,9 @@ if( function_exists('acf_add_options_page') ) {
     acf_add_options_page();
 
 }
+
+add_action( 'after_setup_theme', function (){
+    add_theme_support('menus');
+} );
+
+add_theme_support( 'post-thumbnails' );

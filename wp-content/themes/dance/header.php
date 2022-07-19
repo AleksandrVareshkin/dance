@@ -13,10 +13,10 @@
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
-    <meta charset="<?php bloginfo( 'charset' ); ?>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="profile" href="https://gmpg.org/xfn/11" />
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri();?>/style/style.css">
+    <meta charset="<?php bloginfo('charset'); ?>"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="profile" href="https://gmpg.org/xfn/11"/>
+    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Oswald:wght@200;400;500;700&display=swap"
           rel="stylesheet">
     <?php wp_head(); ?>
@@ -24,31 +24,39 @@
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+
 <?php
-    $header_logo     = get_field('header_logo','option');
-    $nav_item_1      = get_field('nav_item_1','option');
-    $nav_item_2      = get_field('nav_item_2','option');
-    $nav_item_3      = get_field('nav_item_3','option');
-    $nav_item_4      = get_field('nav_item_4','option');
-    $nav_item_5      = get_field('nav_item_5','option');
-    $nav_item_search = get_field('nav_item_search','option');
+$header_logo     = get_field('header_logo', 'option');
 
-    $bg_image        = get_field('intro_img');
+$nav_item_search = get_field('nav_item_search', 'option');
+$nav             = get_field('nav', 'option');
+
+$intro_img       = get_field('bgimage');
 ?>
+
 <div class="wrapper">
-
-
-    <div class="intro">
+    <div class="intro" style="background-image:url(<?php echo $intro_img['url']; ?>)">
         <header>
             <div class="header__container container">
-                <div class="header__logo"><?php echo $header_logo; ?></div>
-                <div class="header__nav">
-                    <a href=""><?php echo $nav_item_1; ?></a>
-                    <a href=""><?php echo $nav_item_2; ?></a>
-                    <a href=""><?php echo $nav_item_3; ?></a>
-                    <a href=""><?php echo $nav_item_4; ?></a>
-                    <a href=""><?php echo $nav_item_5; ?></a>
-                </div>
+            <?php
+                if($header_logo){
+                    echo '<div class="header__logo">';
+                    echo $header_logo;
+                    echo '</div>';
+                }
+            ?>
+                <?php
+                wp_nav_menu( [
+                    'menu'            => 'Main',
+                    'container'       => false,
+                    'menu_class'      => 'header__nav',
+                    'echo'            => true,
+                    'fallback_cb'     => 'wp_page_menu',
+                    'items_wrap'      => '<ul  class="%2$s">%3$s</ul>',
+                    'depth'           => 1,
+                    'walker'          => '',
+                ] );
+                ?>
                 <div class="header__search"><i class="fas fa-search"></i></div>
                 <div class="menu-btn-box">
                     <div class="menu-btn">
@@ -60,29 +68,28 @@
 
                 <div class="menu">
                     <div class="menu__header">
-                        <div class="header__logo">Musicology</div>
+                        <?php
+                        if($header_logo){
+                            echo '<div class="header__logo">';
+                            echo $header_logo;
+                            echo '</div>';
+                        }
+                        ?>
                     </div>
-                    <ul class="menu__list">
-                        <li><a href="#"><?php echo $nav_item_1; ?></a></li>
-                        <li><a href="#"><?php echo $nav_item_2; ?></a></li>
-                        <li><a href="#"><?php echo $nav_item_3; ?></a></li>
-                        <li><a href="#"><?php echo $nav_item_4; ?></a></li>
-                        <li><a href="#"><?php echo $nav_item_5; ?></a></li>
-                        <li><a href="#"><?php echo $nav_item_search; ?></a></li>
-                    </ul>
-                </div>
 
+                    <?php
+                    wp_nav_menu( [
+                        'menu'            => 'Main',
+                        'container'       => false,
+                        'menu_class'      => 'menu__list',
+                        'echo'            => true,
+                        'fallback_cb'     => 'wp_page_menu',
+                        'items_wrap'      => '<ul  class="%2$s"><li>%3$s</li></ul>',
+                        'depth'           => 1,
+                        'walker'          => '',
+                    ] );
+                    ?>
+                </div>
             </div>
         </header>
-        <div class="register__block">
-            <h1>
-                <?php get_field('intro_header'); ?>
-            </h1>
-            <p>
-                <?php get_field('intro_text'); ?>
-            </p>
-            <button class="register__button">
-                <a><?php get_field('intro_btn'); ?></a>
-            </button>
-        </div>
-    </div>
+
